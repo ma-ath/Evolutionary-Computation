@@ -1,13 +1,16 @@
 import numpy as np
 from abc import ABC, abstractmethod
+from warnings import warn
 
 class PopulationOptimizer(ABC):
 
-    def __init__(self, problem, population_size, dimensions, bounds, direction = 'min'):
+    def __init__(self, problem, direction, *, population_size, dimensions, bounds, **kwargs):
         super().__init__()
         self.problem = problem
         self.direction = direction.lower()
-        if 
+        if self.direction not in ['max', 'min']:
+            warn("Direction not specified. Must be either 'min' or 'max'. Defaulting to 'min'")
+            self.direction = 'min'
         self.population_size = population_size
         self.dimensions = dimensions
         self.bounds = np.array(bounds)
