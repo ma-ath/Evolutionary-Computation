@@ -34,4 +34,5 @@ class Ackley(BenchmarkFunction):
 class Himmelblau(BenchmarkFunction):
 
     def evaluate(self, X):
+        assert X.shape[1] == 2, "Himmelblau function only takes two variables."
         return (X[:,0]**2 + X[:,1] - 11)**2 + (X[:,0] + X[:,1]**2 -7)**2
