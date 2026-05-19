@@ -2,13 +2,19 @@ import numpy as np
 from abc import ABC, abstractmethod
 
 class SelectionOperator(ABC):
-    def __init__(self):
-        super().__init__()
-        self.rng = np.random.default_rng()
 
     @abstractmethod
-    def select(self, population, fitness):
+    def select(self, *, direction, X, fitness_X, Y, fitness_Y):
         pass
+
+class GreedySelection(SelectionOperator):
+    
+    def select(self, *, direction, X, fitness_X, Y, fitness_Y):
+        if direction == 'min':
+            mask = fitness_Y < fitness_X
+        else:
+            mask = fitness_Y > fitness_X
+        return np.where(mask[:,np.newaxis], Y, X), np.where(mask, fitness_Y, fitness_X)
 
 class TournamentSelection(SelectionOperator):
     def __init__(self, k=2):

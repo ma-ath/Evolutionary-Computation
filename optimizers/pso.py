@@ -38,7 +38,7 @@ class ParticleSwarmOptimizer(PopulationOptimizer):
         r1 = np.random.uniform(low=0, high=1, size=(self.population_size, self.dimensions))
         r2 = np.random.uniform(low=0, high=1, size=(self.population_size, self.dimensions))
         self.V = self.w*self.V + self.c1*r1*(self.p_best - self.X) + self.c2*r2*(p_global_best - self.X)
-        self.X = np.clip(self.X + self.V, a_min=self.bounds[:,0][:,np.newaxis], a_max=self.bounds[:,-1][:,np.newaxis])
+        self.X = np.clip(self.X + self.V, a_min=self.bounds[:,0], a_max=self.bounds[:,-1])
         self.fitness = self.problem.evaluate(self.X)
         if self.direction == 'min':
             mask = self.fitness < self.p_best_fitness
