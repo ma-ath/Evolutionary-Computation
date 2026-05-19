@@ -1,6 +1,6 @@
 import copy
 import numpy as np
-from base import PopulationOptimizer
+from .base import PopulationOptimizer
 
 class ParticleSwarmOptimizer(PopulationOptimizer):
 

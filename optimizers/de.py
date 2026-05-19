@@ -1,5 +1,5 @@
 import numpy as np
-from base import PopulationOptimizer
+from .base import PopulationOptimizer
 from components.selections import SelectionOperator
 from components.crossover import CrossOverOperator
 
