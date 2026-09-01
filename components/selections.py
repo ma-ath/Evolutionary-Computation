@@ -45,4 +45,31 @@ class TournamentSelection(SelectionOperator):
             selected_mating_pool.append(self.rng.choice(best_fitness_set, size=1, replace=False, shuffle=True))
         selected_mating_pool = np.array(selected_mating_pool)
                 
+class CrowdedTournamentSelection(SelectionOperator):
+    
+    def select(self, X, ranks, distances):
+        """
+        Inputs:
+            X: (N,D) matrix representing the current population
+            ranks: (N,) array representing the assigned pareto-front of each solution
+            distances: (N,) array representing the crowding distance of each solution
+        Returns:
+            (N,D) matrix with the selected mating pool
+        """
+        N = X.shape[0]
+
+        competitor_1 = np.random.randint(0, N, size=N)
+        competitor_2 = np.random.randint(0, N, size=N)
+
+        c1_better_rank = ranks[competitor_1] < ranks[competitor_2]
         
+        tie_in_rank = ranks[competitor_1] == ranks[competitor_2]
+        c1_better_distance = distances[competitor_1] > distances[competitor_2]
+        
+        c1_wins = c1_better_rank | (tie_in_rank & c1_better_distance)
+
+        winning_indices = np.where(c1_wins, competitor_1, competitor_2)
+
+        mating_pool = X[winning_indices]
+        
+        return mating_pool
