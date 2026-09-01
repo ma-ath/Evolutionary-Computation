@@ -1,5 +1,6 @@
 import numpy as np
 from abc import ABC, abstractmethod
+from pymoo.problems import get_problem
 
 class BenchmarkFunction(ABC):
 
@@ -36,3 +37,10 @@ class Himmelblau(BenchmarkFunction):
     def evaluate(self, X):
         assert X.shape[1] == 2, "Himmelblau function only takes two variables."
         return (X[:,0]**2 + X[:,1] - 11)**2 + (X[:,0] + X[:,1]**2 -7)**2
+
+class PymooWrapper(BenchmarkFunction):
+    def __init__(self, problem_name, n_var):
+        self.problem = get_problem(problem_name, n_var=n_var)
+        
+    def evaluate(self, X):
+        return self.problem.evaluate(X)
