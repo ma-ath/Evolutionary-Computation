@@ -1,5 +1,5 @@
 import numpy as np
-from base import MultiObjectiveOptimizer
+from optimizers.base import MultiObjectiveOptimizer
 from components.selections import SelectionOperator
 from components.crossover import CrossOverOperator
 from components.mutations import Mutation
@@ -12,9 +12,9 @@ class NSGAII (MultiObjectiveOptimizer):
                  population_size,
                  dimensions,
                  bounds,
-                 crossover_operator = CrossOverOperator,
-                 selection_operator = SelectionOperator,
-                 mutation_operator = Mutation,
+                 crossover_operator: CrossOverOperator,
+                 selection_operator: SelectionOperator,
+                 mutation_operator: Mutation | None,
                  **kwargs):
         super().__init__(problem,
                          population_size=population_size,
@@ -128,7 +128,8 @@ class NSGAII (MultiObjectiveOptimizer):
 
         parents_2 = np.random.permutation(mating_pool)
         offspring = self.crossover_operator.crossover(mating_pool, parents_2)
-        offspring = self.mutation_operator.mutate(offspring)
+        if self.mutation_operator is not None:
+            offspring = self.mutation_operator.mutate(offspring)
 
         offspring = np.clip(offspring, self.bounds[:, 0], self.bounds[:, 1])
         fitness_offspring = self.problem.evaluate(offspring)

@@ -38,9 +38,14 @@ class Himmelblau(BenchmarkFunction):
         assert X.shape[1] == 2, "Himmelblau function only takes two variables."
         return (X[:,0]**2 + X[:,1] - 11)**2 + (X[:,0] + X[:,1]**2 -7)**2
 
-class PymooWrapper(BenchmarkFunction):
-    def __init__(self, problem_name, n_var):
+class PymooWrapper:
+    def __init__(self, problem_name, n_var=30):
         self.problem = get_problem(problem_name, n_var=n_var)
-        
+        self.n_var = n_var
+        self.bounds = np.column_stack((self.problem.xl, self.problem.xu))
+
     def evaluate(self, X):
-        return self.problem.evaluate(X)
+        return self.problem.evaluate(X, return_values_of=["F"])
+        
+    def get_true_pareto_front(self):
+        return self.problem.pareto_front()
