@@ -66,7 +66,7 @@ if __name__ == "__main__":
             plt.draw()
             plt.pause(0.01)
             
-    print("Evolução concluída!")
+    print("Evolution process concluded!")
     
     # Desliga o modo interativo e mantém o gráfico final aberto
     plt.ioff() 
