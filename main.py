@@ -57,8 +57,8 @@ if __name__ == "__main__":
             ax.set_title(f"NSGA-II: ZDT1 - Generation {gen + 1}")
             ax.set_xlabel("Objective 1 (Min)")
             ax.set_ylabel("Objective 2 (Min)")
-            ax.set_xlim(-0.1, 1.1)
-            ax.set_ylim(-0.1, 1.1) # O ZDT1 se concentra no quadrante [0, 1] x [0, 1]
+            # ax.set_xlim(-0.1, 1.1)
+            # ax.set_ylim(-0.1, 1.1)
             ax.legend()
             ax.grid(True, linestyle='--', alpha=0.6)
             
