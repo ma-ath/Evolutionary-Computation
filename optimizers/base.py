@@ -1,6 +1,10 @@
 import numpy as np
 from abc import ABC, abstractmethod
 from warnings import warn
+from typing import Literal
+
+from scipy.stats import qmc
+
 
 class PopulationOptimizer(ABC):
 
@@ -11,6 +15,7 @@ class PopulationOptimizer(ABC):
                  population_size,
                  dimensions,
                  bounds,
+                 sampling: Literal["uniform", "lhs"] = "uniform",
                  **kwargs):
         super().__init__()
         self.problem = problem
@@ -21,7 +26,16 @@ class PopulationOptimizer(ABC):
         self.population_size = population_size
         self.dimensions = dimensions
         self.bounds = np.array(bounds)
-        self.X = np.random.uniform(low=self.bounds[:,0], high=self.bounds[:,1], size=(population_size, dimensions))
+        if sampling.lower() == "uniform":
+            self.X = np.random.uniform(low=self.bounds[:,0], high=self.bounds[:,1], size=(population_size, dimensions))
+        elif sampling.lower() == "lhs":
+            lhs = qmc.LatinHypercube(d=dimensions, seed=42)
+            self.X = (
+                lhs.random(n=population_size) * (self.bounds[:,1] - self.bounds[:,0])
+                + self.bounds[:,0]
+            )
+        else:
+            raise ValueError("Invalid initialization method. Must be either 'uniform' or 'lhs'.")
         self.fitness = self.problem.evaluate(self.X)
 
     @abstractmethod
