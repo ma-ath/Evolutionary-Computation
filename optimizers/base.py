@@ -1,8 +1,8 @@
-import numpy as np
 from abc import ABC, abstractmethod
-from warnings import warn
 from typing import Literal
+from warnings import warn
 
+import numpy as np
 from scipy.stats import qmc
 
 
@@ -16,8 +16,10 @@ class PopulationOptimizer(ABC):
                  dimensions,
                  bounds,
                  sampling: Literal["uniform", "lhs"] = "uniform",
+                 seed: int | None = None,
                  **kwargs):
         super().__init__()
+        self.rng = np.random.default_rng(seed)
         self.problem = problem
         self.direction = direction.lower()
         if self.direction not in ['max', 'min']:
@@ -27,7 +29,7 @@ class PopulationOptimizer(ABC):
         self.dimensions = dimensions
         self.bounds = np.array(bounds)
         if sampling.lower() == "uniform":
-            self.X = np.random.uniform(low=self.bounds[:,0], high=self.bounds[:,1], size=(population_size, dimensions))
+            self.X = self.rng.uniform(low=self.bounds[:,0], high=self.bounds[:,1], size=(population_size, dimensions))
         elif sampling.lower() == "lhs":
             lhs = qmc.LatinHypercube(d=dimensions, seed=42)
             self.X = (
