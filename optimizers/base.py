@@ -61,9 +61,10 @@ class MultiObjectiveOptimizer(PopulationOptimizer):
                  population_size,
                  dimensions,
                  bounds,
+                 direction: str = 'min',
                  **kwargs):
         super().__init__(problem,
-                         direction='min',
+                         direction=direction,
                          population_size=population_size,
                          dimensions=dimensions,
                          bounds=bounds,
