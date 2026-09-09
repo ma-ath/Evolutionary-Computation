@@ -37,7 +37,8 @@ class PopulationOptimizer(ABC):
                 + self.bounds[:,0]
             )
         elif sampling.lower() == "choice":
-            xl, xu = self.bounds[0], self.bounds[1]
+            # Assuming the bounds are a 2D array [[lower_bound, upper_bound]]
+            xl, xu = self.bounds[0][0], self.bounds[0][1]
             self.X = self.rng.choice(
                 np.arange(xl, xu),
                 size=(population_size, dimensions),
