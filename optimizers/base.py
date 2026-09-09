@@ -15,7 +15,7 @@ class PopulationOptimizer(ABC):
                  population_size,
                  dimensions,
                  bounds,
-                 sampling: Literal["uniform", "lhs"] = "uniform",
+                 sampling: Literal["uniform", "lhs", "choice"] = "uniform",
                  seed: int | None = None,
                  **kwargs):
         super().__init__()
@@ -35,6 +35,13 @@ class PopulationOptimizer(ABC):
             self.X = (
                 lhs.random(n=population_size) * (self.bounds[:,1] - self.bounds[:,0])
                 + self.bounds[:,0]
+            )
+        elif sampling.lower() == "choice":
+            xl, xu = self.bounds[0], self.bounds[1]
+            self.X = self.rng.choice(
+                np.arange(xl, xu),
+                size=(population_size, dimensions),
+                replace=True,
             )
         else:
             raise ValueError("Invalid initialization method. Must be either 'uniform' or 'lhs'.")
