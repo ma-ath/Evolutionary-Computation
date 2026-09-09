@@ -21,7 +21,7 @@ class BinomialCrossOver(CrossOverOperator):
 
     def crossover(self, X, V):
         mask = self.rng.uniform(low=0, high=1, size=(X.shape)) < self.probability
-        j_rand = self.rng.randint(low=0, high=X.shape[1], size=X.shape[0])
+        j_rand = self.rng.integers(low=0, high=X.shape[1], size=X.shape[0])
         mask[np.arange(X.shape[0]), j_rand] = True
         return np.where(mask, V, X)
 
