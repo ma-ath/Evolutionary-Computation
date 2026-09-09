@@ -22,7 +22,7 @@ class GaussianMutation(Mutation):
 class BitWiseMutation(Mutation):
     def __init__(self, mutation_rate, seed: int | None = None):
         super().__init__(seed=seed)
-        self.mutation_rate = self.mutation_rate
+        self.mutation_rate = mutation_rate
 
     def mutate(self, X):
         mask = self.rng.random(X.shape) < self.mutation_rate
